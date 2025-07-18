@@ -23,7 +23,7 @@
 
 	<script>
 
-		var map = L.map('map').setView([28.2380, 83.9956], 11);
+		var map = L.map('map').setView([16.0352,103.1433], 11);
 		mapLink = "<a href='http://openstreetmap.org'>OpenStreetMap</a>";
 		L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', { attribution: 'Leaflet &copy; ' + mapLink + ', contribution', maxZoom: 18 }).addTo(map);
 
@@ -32,14 +32,14 @@
 			iconSize: [70, 70]
 		})
 
-		var marker = L.marker([28.2380, 83.9956], { icon: taxiIcon }).addTo(map);
+		var marker = L.marker([16.0352,103.1433], { icon: taxiIcon }).addTo(map);
 
 		map.on('click', function (e) {
 			console.log(e)
 			var newMarker = L.marker([e.latlng.lat, e.latlng.lng]).addTo(map);
 			L.Routing.control({
 				waypoints: [
-					L.latLng(28.2380, 83.9956),
+					L.latLng(16.0352,103.1433),
 					L.latLng(e.latlng.lat, e.latlng.lng)
 				]
 			}).on('routesfound', function (e) {
