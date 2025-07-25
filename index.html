@@ -2,55 +2,57 @@
 <html>
 <head>
   <meta charset="utf-8" />
-  <title>Routing with Control Button</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Leaflet Routing พร้อมปุ่มค้นหา</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
+
   <style>
+    body { margin: 0; }
     #map { height: 100vh; }
-    .routing-button {
+
+    #controlBtn {
       position: absolute;
       top: 10px;
       left: 10px;
       z-index: 1000;
-      background: #4CAF50;
+      background: #0078D4;
       color: white;
       border: none;
       padding: 10px 16px;
       font-size: 14px;
-      border-radius: 6px;
+      border-radius: 8px;
       cursor: pointer;
       box-shadow: 0 2px 6px rgba(0,0,0,0.3);
     }
-    .routing-button.reset {
-      background: #f44336;
-    }
-    .custom-popup {
-      font-family: 'Segoe UI', sans-serif;
-      font-size: 14px;
-      padding: 6px 10px;
-      background-color: #f9f9f9;
-      border-left: 4px solid #4CAF50;
-    }
+
     #info {
       position: absolute;
-      bottom: 10px;
+      top: 60px;
       left: 10px;
+      z-index: 1000;
       background: white;
       padding: 10px;
       border-radius: 8px;
-      box-shadow: 0 0 5px rgba(0,0,0,0.3);
-      font-family: sans-serif;
+      min-width: 220px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.2);
       font-size: 14px;
-      max-width: 300px;
+      line-height: 1.5;
+    }
+
+    .popup-content {
+      font-size: 14px;
+      padding: 4px 8px;
+      font-weight: bold;
+      color: #333;
     }
   </style>
 </head>
 <body>
 
-<button id="routeBtn" class="routing-button">ค้นหาเส้นทาง</button>
-<div id="info">กดปุ่มเพื่อเริ่มค้นหาเส้นทาง</div>
+<button id="controlBtn">เริ่มค้นหาเส้นทาง</button>
+<div id="info">ยังไม่เลือกจุดเริ่มต้นและจุดหมาย</div>
 <div id="map"></div>
 
 <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
@@ -58,69 +60,75 @@
 
 <script>
   const map = L.map('map').setView([13.75, 100.5], 12);
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
 
-  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; OpenStreetMap contributors'
-  }).addTo(map);
+  const controlBtn = document.getElementById('controlBtn');
+  const infoDiv = document.getElementById('info');
 
-  let routingActive = false;
   let startPoint = null;
   let endPoint = null;
   let routingControl = null;
+  let isSelecting = false;
 
-  const routeBtn = document.getElementById('routeBtn');
-  const infoDiv = document.getElementById('info');
+  function formatRouteSummary(route) {
+    const distanceKm = (route.summary.totalDistance / 1000).toFixed(2);
+    const durationMin = (route.summary.totalTime / 60).toFixed(1);
+    return `ระยะทาง: ${distanceKm} km<br>เวลาเดินทาง: ${durationMin} นาที`;
+  }
 
-  routeBtn.addEventListener('click', function () {
-    if (!routingActive) {
-      routingActive = true;
-      routeBtn.innerText = "รีเซ็ต";
-      routeBtn.classList.add('reset');
-      infoDiv.innerHTML = "คลิกจุดเริ่มต้น และคลิกจุดหมายบนแผนที่";
-    } else {
-      resetRouting();
-    }
-  });
+  function createPopupHtml(text) {
+    return `<div class="popup-content">${text}</div>`;
+  }
 
   function resetRouting() {
-    routingActive = false;
     startPoint = null;
     endPoint = null;
-    routeBtn.innerText = "ค้นหาเส้นทาง";
-    routeBtn.classList.remove('reset');
-    infoDiv.innerHTML = "กดปุ่มเพื่อเริ่มค้นหาเส้นทาง";
+    isSelecting = false;
+
     if (routingControl) {
       map.removeControl(routingControl);
       routingControl = null;
     }
-    map.eachLayer(layer => {
-      if (layer instanceof L.Marker && !layer._icon.classList.contains('leaflet-marker-draggable')) {
-        map.removeLayer(layer);
-      }
-    });
+
+    infoDiv.innerHTML = "ยังไม่เลือกจุดเริ่มต้นและจุดหมาย";
+    controlBtn.innerText = "เริ่มค้นหาเส้นทาง";
   }
 
-  map.on('click', function(e) {
-    if (!routingActive) return;
+  controlBtn.addEventListener('click', () => {
+    if (isSelecting || routingControl) {
+      resetRouting();  // เปลี่ยนเป็นปุ่มรีเซ็ต
+    } else {
+      isSelecting = true;
+      alert("คลิกจุดเริ่มต้นบนแผนที่");
+    }
+  });
+
+  map.on('click', function (e) {
+    if (!isSelecting) return;
 
     if (!startPoint) {
       startPoint = e.latlng;
-      L.popup({ className: 'custom-popup' })
+      L.popup()
         .setLatLng(startPoint)
-        .setContent("<strong>จุดเริ่มต้น</strong>")
+        .setContent(createPopupHtml("🚩 จุดเริ่มต้น"))
         .openOn(map);
+      alert("คลิกจุดหมายบนแผนที่");
     } else if (!endPoint) {
       endPoint = e.latlng;
-      L.popup({ className: 'custom-popup' })
+      L.popup()
         .setLatLng(endPoint)
-        .setContent("<strong>จุดหมาย</strong>")
+        .setContent(createPopupHtml("🏁 จุดหมาย"))
         .openOn(map);
       drawRoute();
+      controlBtn.innerText = "รีเซ็ต";
+      isSelecting = false;
     }
   });
 
   function drawRoute() {
-    if (routingControl) map.removeControl(routingControl);
+    if (routingControl) {
+      map.removeControl(routingControl);
+    }
 
     routingControl = L.Routing.control({
       waypoints: [startPoint, endPoint],
@@ -130,22 +138,21 @@
         styles: [{ color: 'gray', opacity: 0.7, weight: 4 }]
       },
       createMarker: function(i, wp, nWps) {
-        return L.marker(wp.latLng, { draggable: true })
-          .bindPopup(`<div class="custom-popup"><strong>${i === 0 ? 'จุดเริ่มต้น' : 'จุดหมาย'}</strong></div>`);
+        return L.marker(wp.latLng, {
+          draggable: true
+        }).bindPopup(createPopupHtml(i === 0 ? "🚩 จุดเริ่มต้น" : "🏁 จุดหมาย"));
       }
     })
     .on('routesfound', function(e) {
       const routes = e.routes;
-      let html = '';
+      let summaryHtml = '';
       routes.forEach((route, i) => {
-        const km = (route.summary.totalDistance / 1000).toFixed(2);
-        const min = (route.summary.totalTime / 60).toFixed(1);
-        html += `<strong>เส้นทาง ${i + 1}</strong>: ${km} กม. / ${min} นาที<br>`;
+        summaryHtml += `<div><strong>เส้นทาง ${i + 1}</strong><br>${formatRouteSummary(route)}</div><hr>`;
       });
-      infoDiv.innerHTML = html;
+      infoDiv.innerHTML = `<strong>สรุปเส้นทาง:</strong><br>${summaryHtml}`;
     })
-    .on('waypointschanged', () => {
-      infoDiv.innerHTML = "กำลังคำนวณเส้นทางใหม่...";
+    .on('waypointschanged', function() {
+      infoDiv.innerHTML = `<strong>สรุปเส้นทาง:</strong><br>กำลังคำนวณใหม่...`;
     })
     .addTo(map);
   }
