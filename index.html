@@ -2,14 +2,14 @@
 <html>
 <head>
   <meta charset="utf-8" />
-  <title>Leaflet Routing หลายจุด + สวยงาม</title>
+  <title>Leaflet Routing - Custom Popup + Multi Waypoint</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
 
   <style>
-    body { margin: 0; font-family: 'Segoe UI', sans-serif; }
+    body { margin: 0; font-family: sans-serif; }
     #map { height: 100vh; }
 
     #controlBtn {
@@ -33,22 +33,26 @@
       left: 10px;
       z-index: 1000;
       background: white;
-      padding: 12px;
-      border-radius: 10px;
-      min-width: 240px;
-      box-shadow: 0 0 5px rgba(0,0,0,0.3);
+      padding: 10px;
+      border-radius: 8px;
+      min-width: 250px;
+      box-shadow: 0 0 5px rgba(0,0,0,0.2);
       font-size: 14px;
-      line-height: 1.6;
+      line-height: 1.5;
     }
 
-    .custom-popup {
+    .popup-box {
+      font-size: 14px;
       padding: 6px 10px;
+      color: #222;
+    }
+
+    .popup-box span {
+      display: inline-block;
+      padding: 4px 8px;
+      border-radius: 4px;
+      background: #f0f0f0;
       font-weight: bold;
-      border-left: 4px solid #0078D4;
-      background: #f0f4ff;
-      border-radius: 6px;
-      color: #333;
-      box-shadow: 0 0 5px rgba(0,0,0,0.2);
     }
   </style>
 </head>
@@ -72,4 +76,113 @@
   let routingControl = null;
   let isSelecting = false;
 
-  controlBtn.ad
+  function formatRouteSummary(route) {
+    const distanceKm = (route.summary.totalDistance / 1000).toFixed(2);
+    const durationMin = (route.summary.totalTime / 60).toFixed(1);
+    return `ระยะทาง: ${distanceKm} km<br>เวลาเดินทาง: ${durationMin} นาที`;
+  }
+
+  function createPopupHtml(label) {
+    return `<div class="popup-box"><span>${label}</span></div>`;
+  }
+
+  function resetRouting() {
+    waypoints = [];
+    isSelecting = false;
+
+    if (routingControl) {
+      map.removeControl(routingControl);
+      routingControl = null;
+    }
+
+    infoDiv.innerHTML = "ยังไม่เลือกจุดเริ่มต้นและจุดหมาย";
+    controlBtn.innerText = "เริ่มค้นหาเส้นทาง";
+  }
+
+  controlBtn.addEventListener('click', () => {
+    if (isSelecting || routingControl) {
+      resetRouting();
+    } else {
+      isSelecting = true;
+      showPopup(map.getCenter(), "คลิกเลือกจุดเริ่มต้น");
+    }
+  });
+
+  function showPopup(latlng, message) {
+    L.popup()
+      .setLatLng(latlng)
+      .setContent(createPopupHtml(message))
+      .openOn(map);
+  }
+
+  map.on('click', function (e) {
+    if (!isSelecting) return;
+
+    waypoints.push(e.latlng);
+    let label = "";
+
+    if (waypoints.length === 1) {
+      label = "🚩 จุดเริ่มต้น";
+    } else if (waypoints.length === 2) {
+      label = "🏁 จุดหมาย";
+    } else {
+      label = `จุดทางผ่าน ${waypoints.length - 2}`;
+    }
+
+    L.popup()
+      .setLatLng(e.latlng)
+      .setContent(createPopupHtml(label))
+      .openOn(map);
+
+    if (waypoints.length >= 2) {
+      drawRoute();
+      controlBtn.innerText = "รีเซ็ต";
+    }
+  });
+
+  function drawRoute() {
+    if (routingControl) {
+      map.removeControl(routingControl);
+    }
+
+    routingControl = L.Routing.control({
+      waypoints: waypoints,
+      routeWhileDragging: true,
+      showAlternatives: true,
+      altLineOptions: [
+        {
+          styles: [{ color: 'deepskyblue', opacity: 0.7, weight: 4 }] // สำรอง 1
+        },
+        {
+          styles: [{ color: 'gold', opacity: 0.7, weight: 4 }] // สำรอง 2
+        }
+      ],
+      lineOptions: {
+        styles: [{ color: 'blue', opacity: 1, weight: 5 }] // เส้นหลัก
+      },
+      createMarker: function (i, wp, nWps) {
+        let label = i === 0 ? "🚩 จุดเริ่มต้น"
+                 : i === nWps - 1 ? "🏁 จุดหมาย"
+                 : `จุดทางผ่าน ${i}`;
+        return L.marker(wp.latLng, { draggable: true })
+          .bindPopup(createPopupHtml(label));
+      }
+    })
+    .on('routesfound', function (e) {
+      const routes = e.routes;
+      let summaryHtml = '';
+      routes.forEach((route, i) => {
+        const color = i === 0 ? 'blue' : i === 1 ? 'deepskyblue' : 'gold';
+        summaryHtml += `<div><strong style="color:${color}">เส้นทาง ${i + 1}</strong><br>${formatRouteSummary(route)}</div><hr>`;
+      });
+      infoDiv.innerHTML = `<strong>สรุปเส้นทาง:</strong><br>${summaryHtml}`;
+    })
+    .on('waypointschanged', function () {
+      infoDiv.innerHTML = `<strong>สรุปเส้นทาง:</strong><br>กำลังคำนวณใหม่...`;
+    })
+    .addTo(map);
+  }
+</script>
+
+</body>
+</html>
