@@ -70,6 +70,8 @@
     const routeBtn = document.getElementById("routeBtn");
     const coordInputs = document.getElementById("coord-inputs");
     const showInstruction = document.getElementById("showInstruction");
+    const routeColors = ["#0047ab", "#32a852", "#f39c12"]; // สีเดียวกับ altLineOptions
+
 
     routeBtn.addEventListener("click", () => {
       if (mode === "idle") {
@@ -172,10 +174,11 @@
         createMarker: () => null,
         showAlternatives: true,
         altLineOptions: [
-          { styles: [{ color: "blue", opacity: 1, weight: 5 }] },
-          { styles: [{ color: "deepskyblue", opacity: 0.7, weight: 5 }] },
-          { styles: [{ color: "gold", opacity: 0.7, weight: 5 }] },
+          { styles: [{ color: "#0047ab", opacity: 1, weight: 6 }] },       // เส้นทางหลัก: น้ำเงินเข้ม
+          { styles: [{ color: "#32a852", opacity: 0.8, weight: 5 }] },     // เส้นทางสำรอง 1: เขียว
+          { styles: [{ color: "#f39c12", opacity: 0.8, weight: 5 }] },     // เส้นทางสำรอง 2: ส้มทอง
         ],
+
       })
         .on("routesfound", function (e) {
           const popupGroup = L.layerGroup().addTo(map);
@@ -196,7 +199,9 @@
             popupGroup.addLayer(popup);
 
             // Show summary below input
-            showInstruction.innerHTML += `<div><strong>${label}</strong><br>ระยะทาง: ${distance} กม.<br>เวลา: ${timeStr}</div><br>`;
+//          showInstruction.innerHTML += `<div><strong>${label}</strong><br>ระยะทาง: ${distance} กม.<br>เวลา: ${timeStr}</div><br>`;
+            showInstruction.innerHTML += `<div style="color: ${routeColors[idx]}"><strong>${label}</strong><br>ระยะทาง: ${distance} กม.<br>เวลา: ${timeStr}</div><br>`;
+
           });
 
           routeControl._popupGroup = popupGroup;
