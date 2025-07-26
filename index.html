@@ -188,37 +188,36 @@ map.on("click", (e) => {
 
 function updateInputs() {
   coordInputs.innerHTML = "";
+
   waypoints.forEach((pt, i) => {
     const row = document.createElement("div");
 
     let label = "";
     if (i === 0) {
       label = "จุดเริ่ม :";
-    } else if (i === waypoints.length - 1) {
-      label = "จุดหมาย :";
-    } else {
+    } else if (i === 1 && waypoints.length === 3) {
       label = "ทางผ่าน :";
+    } else {
+      label = "จุดหมาย :";
     }
 
-    // เฉพาะทางผ่าน (index = 1) ที่มีปุ่มลบ
+    // กำหนดเฉพาะแถวที่ 2 (index 1) เท่านั้นที่มีปุ่มลบ
     const showRemove = waypoints.length === 3 && i === 1;
 
     row.innerHTML = `
       <label>${label}</label>
       <input type="text" value="${pt.lat.toFixed(6)}, ${pt.lng.toFixed(6)}" data-idx="${i}">
-      ${
-        showRemove
-          ? '<span class="remove-btn" onclick="removeVia(${i})">✖</span>'
-          : ""
-      }
+      ${showRemove ? `<span class="remove-btn" onclick="removeVia(${i})">✖</span>` : ""}
     `;
+
     coordInputs.appendChild(row);
   });
 
+  // ผูกการเปลี่ยนค่าจาก input
   coordInputs.querySelectorAll("input").forEach((input) => {
     input.addEventListener("change", (e) => {
       const idx = +e.target.dataset.idx;
-      const [lat, lng] = e.target.value.split(",").map((v) => parseFloat(v));
+      const [lat, lng] = e.target.value.split(",").map(parseFloat);
       if (!isNaN(lat) && !isNaN(lng)) {
         waypoints[idx] = L.latLng(lat, lng);
         markers[idx].setLatLng(waypoints[idx]);
@@ -227,6 +226,7 @@ function updateInputs() {
     });
   });
 }
+
 
 
 
