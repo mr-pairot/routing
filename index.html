@@ -279,11 +279,11 @@ function updateInputs() {
           const midLatLng = route.coordinates[Math.floor(route.coordinates.length / 2)];
           const popup = L.popup()
             .setLatLng(midLatLng)
-            .setContent(`<strong>${label}</strong><br>ระยะทาง: ${distance} กม.<br>เวลา: ${timeStr}`)
+            .setContent(`<strong>${label}</strong><br>ระยะทาง: ${distance} กม.<br>เวลาประมาณ: ${timeStr}`)
             .openOn(map);
           popupGroup.addLayer(popup);
 
-          showInstruction.innerHTML += `<div style="color: ${routeColors[idx]}"><strong>${label}</strong><br>ระยะทาง: ${distance} กม.<br>เวลา: ${timeStr}</div><br>`;
+          showInstruction.innerHTML += `<div style="color: ${routeColors[idx]}"><strong>${label}</strong><br>ระยะทาง: ${distance} กม.<br>เวลาประมาณ: ${timeStr}</div><br>`;
         });
 
         routeControl._popupGroup = popupGroup;
