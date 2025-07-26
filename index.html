@@ -152,8 +152,9 @@
       }
     });
 
-    map.on("click", (e) => {
+map.on("click", (e) => {
   if (mode !== "selecting") return;
+  if (waypoints.length >= 3) return; // จำกัดแค่ 3 จุด
 
   const marker = L.marker(e.latlng, { draggable: true }).addTo(map);
 
@@ -162,11 +163,11 @@
     waypoints.push(e.latlng);
     markers.push(marker);
   } else if (waypoints.length === 1) {
-    // จุดหมาย
+    // จุดหมาย (ชั่วคราว)
     waypoints.push(e.latlng);
     markers.push(marker);
-  } else {
-    // แทรกเป็นจุดทางผ่าน (index 1)
+  } else if (waypoints.length === 2) {
+    // เพิ่มจุดที่ 3 → เป็น "ทางผ่าน" แทรกที่ index 1
     waypoints.splice(1, 0, e.latlng);
     markers.splice(1, 0, marker);
   }
@@ -199,11 +200,14 @@ function updateInputs() {
       label = "ทางผ่าน :";
     }
 
+    // เฉพาะทางผ่าน (index = 1) ที่มีปุ่มลบ
+    const showRemove = waypoints.length === 3 && i === 1;
+
     row.innerHTML = `
       <label>${label}</label>
       <input type="text" value="${pt.lat.toFixed(6)}, ${pt.lng.toFixed(6)}" data-idx="${i}">
       ${
-        i !== 0 && i !== waypoints.length - 1
+        showRemove
           ? '<span class="remove-btn" onclick="removeVia(' + i + ')">✖</span>'
           : ""
       }
@@ -223,6 +227,9 @@ function updateInputs() {
     });
   });
 }
+
+
+
 
 
     function removeVia(index) {
