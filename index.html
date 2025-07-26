@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8" />
-  <title>Leaflet Routing Map+++</title>
+  <title>Leaflet Routing Map</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
@@ -212,7 +212,7 @@ function updateInputs() {
       <input type="text" value="${pt.lat.toFixed(6)}, ${pt.lng.toFixed(6)}" data-idx="${i}">
       ${
         showRemove
-          ? '<span class="remove-btn" onclick="removeVia(' + i + ')">✖</span>'
+          ? '<span class="remove-btn" onclick="removeVia(${i-1})">✖</span>'
           : ""
       }
     `;
