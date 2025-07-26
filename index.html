@@ -50,8 +50,13 @@
 
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
+  
   <script>
     const map = L.map('map').setView([13.7367,100.523],13);
+    L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
+      attribution: "&copy; OpenStreetMap contributors",
+    }).addTo(map);
+    
     let routeControl = null, waypoints = [], markers = [], mode = 'idle';
     const routeBtn = document.getElementById('routeBtn');
     const coordInputs = document.getElementById('coord-inputs');
