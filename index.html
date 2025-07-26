@@ -21,7 +21,7 @@
     }
 
     
-/*------------------------------------------------*/
+/*---- ตั้งค่ารูปแบบ js/Style.css ---*/
  button {
       font-family: 'Sarabun', sans-serif !important;
     }
@@ -111,7 +111,7 @@
     }
   </style>
 
-  <!-- ตั้งค่าสีเส้นทาง -->
+<!-- ตั้งค่าสีเส้นทาง js/config.js -->
 <script>
   const cRoute1 ="#0000ff";//ทางหลัก
   const cRoute2 ="red";    //สำรอง1
@@ -146,6 +146,7 @@
     <div id="showInstruction" class="instruction"></div>
   </div>
 
+  <!-- <script src="js/config.js"></script> -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
   <script>
@@ -162,9 +163,7 @@
     const routeBtn = document.getElementById("routeBtn");
     const coordInputs = document.getElementById("coord-inputs");
     const showInstruction = document.getElementById("showInstruction");
-    const routeColors = ["#0000ff", "red", "#f39c12"]; // สีเดียวกับ altLineOptions
-
-
+    
     routeBtn.addEventListener("click", () => {
       if (mode === "idle") {
         mode = "selecting";
