@@ -7,7 +7,37 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
   <style>
-    /* ... CSS เดิม ... */
+     #map {
+      height: 100vh;
+    }
+    .floating-panel {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      background: white;
+      padding: 10px;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+      z-index: 1000;
+      width: 300px;
+      font-family: sans-serif;
+    }
+    .floating-panel input {
+      width: 100%;
+      margin-bottom: 8px;
+      padding: 5px;
+      border: 1px solid #ccc;
+    }
+    .remove-btn {
+      float: right;
+      color: red;
+      cursor: pointer;
+    }
+    .instruction {
+      margin-top: 10px;
+      color: #0047ab;
+      font-weight: bold;
+    }
   </style>
 </head>
 <body>
