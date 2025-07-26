@@ -153,59 +153,77 @@
     });
 
     map.on("click", (e) => {
-      if (mode !== "selecting") return;
+  if (mode !== "selecting") return;
 
-      const marker = L.marker(e.latlng, { draggable: true }).addTo(map);
-      markers.push(marker);
-      waypoints.push(e.latlng);
+  const marker = L.marker(e.latlng, { draggable: true }).addTo(map);
 
-      const index = waypoints.length - 1;
+  if (waypoints.length === 0) {
+    // จุดเริ่มต้น
+    waypoints.push(e.latlng);
+    markers.push(marker);
+  } else if (waypoints.length === 1) {
+    // จุดหมาย
+    waypoints.push(e.latlng);
+    markers.push(marker);
+  } else {
+    // แทรกเป็นจุดทางผ่าน (index 1)
+    waypoints.splice(1, 0, e.latlng);
+    markers.splice(1, 0, marker);
+  }
+
+  updateInputs();
+
+  // ตั้งค่าการลาก
+  markers.forEach((m, idx) => {
+    m.off("dragend").on("dragend", () => {
+      waypoints[idx] = m.getLatLng();
       updateInputs();
-
-      marker.on("dragend", () => {
-        waypoints[index] = marker.getLatLng();
-        updateInputs();
-        drawRoute();
-      });
-
       drawRoute();
     });
+  });
 
-    function updateInputs() {
-      coordInputs.innerHTML = "";
-      waypoints.forEach((pt, i) => {
-        const row = document.createElement("div");
-        const label =
-          i === 0
-            ? "จุดเริ่ม :"
-            : i === waypoints.length - 1
-            ? "จุดหมาย :"
-            : "ทางผ่าน :";
+  drawRoute();
+});
 
-        row.innerHTML = `
-          <label>${label}</label>
-          <input type="text" value="${pt.lat.toFixed(6)}, ${pt.lng.toFixed(6)}" data-idx="${i}">
-          ${
-            i !== 0 && i !== waypoints.length - 1
-              ? '<span class="remove-btn" onclick="removeVia(' + i + ')">✖</span>'
-              : ""
-          }
-        `;
-        coordInputs.appendChild(row);
-      });
+function updateInputs() {
+  coordInputs.innerHTML = "";
+  waypoints.forEach((pt, i) => {
+    const row = document.createElement("div");
 
-      coordInputs.querySelectorAll("input").forEach((input) => {
-        input.addEventListener("change", (e) => {
-          const idx = +e.target.dataset.idx;
-          const [lat, lng] = e.target.value.split(",").map((v) => parseFloat(v));
-          if (!isNaN(lat) && !isNaN(lng)) {
-            waypoints[idx] = L.latLng(lat, lng);
-            markers[idx].setLatLng(waypoints[idx]);
-            drawRoute();
-          }
-        });
-      });
+    let label = "";
+    if (i === 0) {
+      label = "จุดเริ่ม :";
+    } else if (i === waypoints.length - 1) {
+      label = "จุดหมาย :";
+    } else {
+      label = "ทางผ่าน :";
     }
+
+    row.innerHTML = `
+      <label>${label}</label>
+      <input type="text" value="${pt.lat.toFixed(6)}, ${pt.lng.toFixed(6)}" data-idx="${i}">
+      ${
+        i !== 0 && i !== waypoints.length - 1
+          ? '<span class="remove-btn" onclick="removeVia(' + i + ')">✖</span>'
+          : ""
+      }
+    `;
+    coordInputs.appendChild(row);
+  });
+
+  coordInputs.querySelectorAll("input").forEach((input) => {
+    input.addEventListener("change", (e) => {
+      const idx = +e.target.dataset.idx;
+      const [lat, lng] = e.target.value.split(",").map((v) => parseFloat(v));
+      if (!isNaN(lat) && !isNaN(lng)) {
+        waypoints[idx] = L.latLng(lat, lng);
+        markers[idx].setLatLng(waypoints[idx]);
+        drawRoute();
+      }
+    });
+  });
+}
+
 
     function removeVia(index) {
       map.removeLayer(markers[index]);
