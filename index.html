@@ -72,7 +72,7 @@
       border: 1px solid #ccc;
     }
     .remove-btn {
-      float: left;
+      float: right;
       color: red;
       cursor: pointer;
     }
@@ -204,7 +204,7 @@ function updateInputs() {
     // เฉพาะทางผ่าน (index = 1) ที่มีปุ่มลบ
  //   const showRemove = waypoints.length === 3 && i === 1;
     const isVia = i > 0 && i < waypoints.length - 1;
-    const showRemove = isVia && waypoints.length === 3;
+    const showRemove = isVia && waypoints.length === 2;
 
 
     row.innerHTML = `
