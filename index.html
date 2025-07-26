@@ -3,7 +3,7 @@
 
 <head>
   <meta charset="UTF-8" />
-  <title>Leaflet Routing Map</title>
+  <title>Leaflet Routing Map++</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
   <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
@@ -186,38 +186,40 @@ map.on("click", (e) => {
   drawRoute();
 });
 
+
 function updateInputs() {
   coordInputs.innerHTML = "";
-
   waypoints.forEach((pt, i) => {
     const row = document.createElement("div");
 
     let label = "";
     if (i === 0) {
       label = "จุดเริ่ม :";
-    } else if (i === 1 && waypoints.length === 3) {
-      label = "ทางผ่าน :";
-    } else {
+    } else if (i === waypoints.length - 1) {
       label = "จุดหมาย :";
+    } else {
+      label = "ทางผ่าน :";
     }
 
-    // กำหนดเฉพาะแถวที่ 2 (index 1) เท่านั้นที่มีปุ่มลบ
+    // เฉพาะทางผ่าน (index = 1) ที่มีปุ่มลบ
     const showRemove = waypoints.length === 3 && i === 1;
 
     row.innerHTML = `
       <label>${label}</label>
       <input type="text" value="${pt.lat.toFixed(6)}, ${pt.lng.toFixed(6)}" data-idx="${i}">
-      ${showRemove ? `<span class="remove-btn" onclick="removeVia(${i})">✖</span>` : ""}
+      ${
+        showRemove
+          ? '<span class="remove-btn" onclick="removeVia(' + i + ')">✖</span>'
+          : ""
+      }
     `;
-
     coordInputs.appendChild(row);
   });
 
-  // ผูกการเปลี่ยนค่าจาก input
   coordInputs.querySelectorAll("input").forEach((input) => {
     input.addEventListener("change", (e) => {
       const idx = +e.target.dataset.idx;
-      const [lat, lng] = e.target.value.split(",").map(parseFloat);
+      const [lat, lng] = e.target.value.split(",").map((v) => parseFloat(v));
       if (!isNaN(lat) && !isNaN(lng)) {
         waypoints[idx] = L.latLng(lat, lng);
         markers[idx].setLatLng(waypoints[idx]);
@@ -226,8 +228,6 @@ function updateInputs() {
     });
   });
 }
-
-
 
 
 
