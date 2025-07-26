@@ -12,11 +12,88 @@
     rel="stylesheet"
     href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css"
   />
+  <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;700&display=swap" rel="stylesheet">
+
   <style>
     #map {
       height: 100vh;
       cursor: default;
     }
+
+    <style>
+/*------------------------------------------------*/
+  /* กล่องเส้นทาง */
+  .leaflet-routing-container {
+    background-color: #f9f9f9;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    font-family: 'Sarabun', sans-serif;
+    font-size: 15px;
+    padding: 10px;
+    width: 300px;
+    border: 1px solid #e0e0e0;
+  }
+
+  /* หัวข้อเส้นทาง */
+  .leaflet-routing-container h2 {
+    font-size: 16px;
+    color: #0047ab;
+    font-weight: bold;
+  }
+
+  /* ปุ่มย่อ/ขยาย */
+  .leaflet-routing-collapse-btn {
+    background-color: #0047ab;
+    color: #fff;
+    font-size: 14px;
+    padding: 4px 10px;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    margin-top: 5px;
+  }
+
+  .leaflet-routing-collapse-btn:hover {
+    background-color: #00397f;
+  }
+
+  /* ทางเลือกเส้นทาง */
+  .leaflet-routing-alt {
+    border-left: 4px solid #f5c400;
+    padding: 8px 10px;
+    margin-bottom: 8px;
+    background-color: #fffbe6;
+    border-radius: 4px;
+  }
+
+  .leaflet-routing-alt h2 {
+    margin: 0;
+    font-size: 15px;
+    color: #f39c12;
+  }
+
+  /* รายการคำแนะนำ */
+  .leaflet-routing-instructions {
+    margin-top: 8px;
+  }
+
+  .leaflet-routing-instruction {
+    padding: 6px 0;
+    border-bottom: 1px dashed #ccc;
+  }
+
+  .leaflet-routing-instruction:last-child {
+    border-bottom: none;
+  }
+
+  /* สรุประยะทาง / เวลา */
+  .leaflet-routing-summary {
+    font-weight: bold;
+    color: #0047ab;
+    margin-top: 6px;
+  }
+/*------------------------------------------------*/
+
     .floating-panel {
       position: absolute;
       top: 18px;
