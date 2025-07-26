@@ -113,21 +113,25 @@
 
   <!-- ตั้งค่าสีเส้นทาง -->
 <script>
+  const cRoute1 ="#0000ff";//ทางหลัก
+  const cRoute2 ="red";    //สำรอง1
+  const cRoute3 ="#f39c12";//สำรอง2
+  const routeColors = [cRoute1, cRoute2, cRoute3];
   // ✅ สไตล์เส้นหลัก
   const mainRouteStyles = [
     { color: 'white', weight: 8, opacity: 0.8 },
-    { color: '#0000ff', weight: 3, opacity: 0.8 }
+    { color: cRoute1, weight: 3, opacity: 0.8 }
   ];
 
   // ✅ สไตล์เส้นสำรอง
   const altRouteStyles = [
     [
       { color: 'white', weight: 6, opacity: 0.8 },
-      { color: 'red', weight: 3, opacity: 0.8 }
+      { color: cRoute2, weight: 3, opacity: 0.8 }
     ],
     [
       { color: 'white', weight: 6, opacity: 0.8 },
-      { color: '#f39c12', weight: 3, opacity: 0.8 }
+      { color: cRoute3, weight: 3, opacity: 0.8 }
     ]
     ];
 </script>
