@@ -164,22 +164,24 @@
       ordered.push(waypoints[1]);
 
       routeControl = L.Routing.control({
-        waypoints: ordered,
-        routeWhileDragging: true,
-        show: false,
-        collapsible: true,
-        router: L.Routing.osrmv1({
-          serviceUrl: "https://router.project-osrm.org/route/v1",
-        }),
-        createMarker: () => null,
-        showAlternatives: true,
-        altLineOptions: [
-          { styles: [{ color: "#0047ab", opacity: 1, weight: 6 }] },       // เส้นทางหลัก: น้ำเงินเข้ม
-          { styles: [{ color: "#32a852", opacity: 0.8, weight: 5 }] },     // เส้นทางสำรอง 1: เขียว
-          { styles: [{ color: "#f39c12", opacity: 0.8, weight: 5 }] },     // เส้นทางสำรอง 2: ส้มทอง
-        ],
+  waypoints: ordered,
+  routeWhileDragging: true,
+  show: false,
+  collapsible: true,
+  router: L.Routing.osrmv1({
+    serviceUrl: "https://router.project-osrm.org/route/v1",
+  }),
+  createMarker: () => null,
+  showAlternatives: true,
+  lineOptions: {
+    styles: [{ color: "#0047ab", opacity: 1, weight: 6 }]  // เส้นหลัก
+  },
+  altLineOptions: [
+    { styles: [{ color: "#32a852", opacity: 0.8, weight: 5 }] }, // สำรอง 1
+    { styles: [{ color: "#f39c12", opacity: 0.8, weight: 5 }] }  // สำรอง 2
+  ]
+})
 
-      })
         .on("routesfound", function (e) {
           const popupGroup = L.layerGroup().addTo(map);
           showInstruction.innerHTML = "";
