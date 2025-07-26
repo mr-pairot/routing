@@ -208,7 +208,7 @@ function updateInputs() {
       <input type="text" value="${pt.lat.toFixed(6)}, ${pt.lng.toFixed(6)}" data-idx="${i}">
       ${
         showRemove
-          ? '<span class="remove-btn" onclick="removeVia(' + i + ')">✖</span>'
+          ? '<span class="remove-btn" onclick="removeVia(${i})">✖</span>'
           : ""
       }
     `;
