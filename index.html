@@ -110,6 +110,29 @@
       font-weight: bold;
     }
   </style>
+
+  <!-- ตั้งค่าสีเส้นทาง -->
+<script>
+  // ✅ สไตล์เส้นหลัก
+  const mainRouteStyles = [
+    { color: 'white', weight: 8, opacity: 0.8 },
+    { color: '#0000ff', weight: 3, opacity: 0.8 }
+  ];
+
+  // ✅ สไตล์เส้นสำรอง
+  const altRouteStyles = [
+    [
+      { color: 'white', weight: 6, opacity: 0.8 },
+      { color: 'red', weight: 3, opacity: 0.8 }
+    ],
+    [
+      { color: 'white', weight: 6, opacity: 0.8 },
+      { color: '#f39c12', weight: 3, opacity: 0.8 }
+    ]
+    ];
+</script>
+
+  
 </head>
 <body>
   <div id="map"></div>
@@ -239,11 +262,11 @@
   createMarker: () => null,
   showAlternatives: true,
   lineOptions: {
-    styles: [{ color: 'white', weight: 8, opacity: 0.8 },{ color: "#0047ab", opacity: 0.8, weight: 4 }]  // เส้นหลัก
+    styles: mainRouteStyles    
   },
   altLineOptions: [
-    { styles: [{ color: 'white', weight: 6, opacity: 0.8 },{ color: "red", opacity: 0.8, weight: 3 }] }, // สำรอง 1
-    { styles: [{ color: 'white', weight: 6, opacity: 0.8 },{ color: "#f39c12", opacity: 0.8, weight: 3 }] }  // สำรอง 2
+    { styles: altRouteStyles[0] },
+    { styles: altRouteStyles[1] }
   ]
 })
 
