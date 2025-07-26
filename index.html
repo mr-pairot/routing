@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="th">
+<!--
 <head>
   <meta charset="UTF-8" />
   <title>Leaflet Routing Map</title>
@@ -126,10 +127,12 @@
     let waypoints = [];
     let markers = [];
     let mode = "idle";
-
+*/
+    /*
     const routeBtn = document.getElementById("routeBtn");
     const coordInputs = document.getElementById("coord-inputs");
     const showInstruction = document.getElementById("showInstruction");
+    
 
     routeBtn.addEventListener("click", () => {
       if (mode === "idle") {
@@ -274,6 +277,179 @@
         routeControl = null;
       }
     }
+  ≈=========== */
+
+<!DOCTYPE html>
+<html lang="th">
+  -->
+<head>
+  <meta charset="UTF-8" />
+  <title>Routing LRM — จุดทางผ่านตรงกลาง</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
+  <style>
+    #map { height: 100vh; }
+    .panel {
+      position: absolute; top: 10px; left: 10px;
+      background: white; padding: 10px; border-radius: 8px;
+      box-shadow: 0 0 6px rgba(0,0,0,0.3); width: 320px; font-family: sans-serif; z-index:1000;
+    }
+    .panel input { width: 100%; margin: 4px 0; padding: 4px; }
+    .row { display: flex; align-items: center; gap: 6px; margin-bottom: 4px; }
+    .remove-btn {
+      background: #e74c3c; color: white; border: none; cursor: pointer;
+      width: 20px; height: 20px; line-height: 18px; text-align: center; border-radius: 50%;
+    }
+    .instruction { margin-top: 8px; color: #0066cc; font-weight: bold; font-size: 0.9em; }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+  <div class="panel">
+    <button id="btnRoute">ค้นหาเส้นทาง</button>
+    <div id="rows"></div>
+    <div id="instruction" class="instruction"></div>
+  </div>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
+  <script>
+    const map = L.map('map').setView([13.75,100.5], 13);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
+
+    let mode = 'idle', waypoints = [], markers = [], routeControl = null;
+    const btn = document.getElementById('btnRoute');
+    const rowsDiv = document.getElementById('rows');
+    const instructionDiv = document.getElementById('instruction');
+
+    btn.onclick = () => {
+      if (mode === 'idle') {
+        mode = 'selecting'; btn.textContent = 'รีเซ็ต';
+        resetAll(false);
+        instructionDiv.innerHTML = 'คลิกจุดเริ่มต้น แล้วจุดหมาย จากนั้น (ทางผ่าน) หรือลากปรับเส้นทาง';
+      } else {
+        resetAll(true);
+      }
+    };
+
+    map.on('click', e => {
+      if (mode !== 'selecting') return;
+      if (waypoints.length >= 3) return;
+      const latlng = e.latlng;
+      const marker = L.marker(latlng, { draggable: true }).addTo(map);
+      markers.push(marker);
+
+      if (waypoints.length === 0) {
+        waypoints.push(latlng);
+      } else if (waypoints.length === 1) {
+        waypoints.push(latlng);
+      } else {
+        // ตอนนี้มี 2 จุด: แทรกทางผ่านเป็น index 1
+        waypoints.splice(1, 0, latlng);
+      }
+
+      marker.on('dragend', () => {
+        const idx = markers.indexOf(marker);
+        waypoints[idx] = marker.getLatLng();
+        updateRows();
+        drawRoute();
+      });
+
+      updateRows();
+      drawRoute();
+    });
+
+    function updateRows() {
+      rowsDiv.innerHTML = '';
+      waypoints.forEach((pt, i) => {
+        const row = document.createElement('div');
+        row.className = 'row';
+        let label = (i === 0 ? 'จุดเริ่ม :' :
+                     i === 1 && waypoints.length === 3 ? 'ทางผ่าน :' :
+                     'จุดหมาย :');
+        row.innerHTML = `<span>${label}</span><input type="text" value="${pt.lat.toFixed(6)}, ${pt.lng.toFixed(6)}" data-idx="${i}">`;
+        if (i === 1 && waypoints.length === 3) {
+          const rm = document.createElement('button');
+          rm.className = 'remove-btn'; rm.textContent = '×';
+          rm.onclick = () => { removeVia(); };
+          row.appendChild(rm);
+        }
+        rowsDiv.appendChild(row);
+      });
+
+      rowsDiv.querySelectorAll('input').forEach(inp => {
+        inp.onchange = e => {
+          const i = +e.target.dataset.idx;
+          const [lat,lng] = e.target.value.split(',').map(val => parseFloat(val));
+          if (!isNaN(lat) && !isNaN(lng)) {
+            waypoints[i] = L.latLng(lat, lng);
+            markers[i].setLatLng(waypoints[i]);
+            drawRoute();
+          }
+        };
+      });
+    }
+
+    function removeVia() {
+      // ลบ index 1 (ทางผ่าน)
+      map.removeLayer(markers[1]);
+      markers.splice(1,1);
+      waypoints.splice(1,1);
+      updateRows();
+      drawRoute();
+    }
+
+    function drawRoute() {
+      if (waypoints.length < 2) return;
+      if (routeControl) map.removeControl(routeControl), routeControl = null;
+
+      const ordered = waypoints.length === 3
+        ? [waypoints[0], waypoints[1], waypoints[2] /* via at idx1, then end */]
+        : [waypoints[0], waypoints[1]];
+
+      routeControl = L.Routing.control({
+        waypoints: ordered,
+        routeWhileDragging: true,
+        showAlternatives: true,
+        createMarker: ()=>null,
+        altLineOptions: [
+          { styles: [{ color: 'deepskyblue', opacity:0.7, weight:5 }] },
+          { styles: [{ color: 'gold', opacity:0.7, weight:5 }] }
+        ],
+        lineOptions: { styles: [{ color:'blue', opacity:1, weight:6 }] }
+      }).on('routesfound', e => {
+        instructionDiv.innerHTML = '';
+        let summaryHtml = '';
+        e.routes.forEach((route, idx) => {
+          const s = route.summary;
+          const dist = (s.totalDistance/1000).toFixed(2);
+          const mins = Math.round(s.totalTime/60);
+          const hrs = Math.floor(mins/60), m = mins % 60;
+          const timeStr = hrs ? `${hrs} ชม. ${m} นาที` : `${m} นาที`;
+          const label = idx === 0 ? 'เส้นทางหลัก' : `เส้นทางสำรอง ${idx}`;
+          summaryHtml += `<div><strong>${label}</strong><br>ระยะทาง: ${dist} กม.<br>เวลา: ${timeStr}</div><br>`;
+
+          const mid = route.coordinates[Math.floor(route.coordinates.length/2)];
+          L.popup()
+            .setLatLng(mid)
+            .setContent(`<strong>${label}</strong><br>ระยะทาง: ${dist} กม.<br>เวลา: ${timeStr}`)
+            .openOn(map);
+        });
+        instructionDiv.innerHTML = summaryHtml;
+      }).addTo(map);
+    }
+
+    function resetAll(reload=false) {
+      mode = 'idle'; btn.textContent = 'ค้นหาเส้นทาง';
+      if (reload) window.location.reload();
+      else {
+        waypoints = []; markers.forEach(m => map.removeLayer(m)); markers = [];
+        rowsDiv.innerHTML = ''; instructionDiv.innerHTML = '';
+        if (routeControl) { map.removeControl(routeControl); routeControl = null; }
+      }
+    }
+  
   </script>
 </body>
 </html>
