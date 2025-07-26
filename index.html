@@ -4,14 +4,8 @@
   <meta charset="UTF-8" />
   <title>Leaflet Routing Map</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <link
-    rel="stylesheet"
-    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
-  />
-  <link
-    rel="stylesheet"
-    href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css"
-  />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
   <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;700&display=swap" rel="stylesheet">
 
   <style>
@@ -20,66 +14,43 @@
       cursor: default;
     }
 
-    
-/*---- ตั้งค่ารูปแบบ js/Style.css ---*/
- button {
+    button {
       font-family: 'Sarabun', sans-serif !important;
     }
-.leaflet-popup-content {
-  font-family: 'Sarabun', sans-serif;
-  font-size: 12px;
- }
-  /* กล่องเส้นทาง */
-  .leaflet-routing-container {
-    background-color: #f9f9f9;
-    border-radius: 10px;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-    font-family: 'Sarabun', sans-serif;
-    font-size: 12px;
-    padding: 10px;
-    width: 270px;
-    border: 1px solid #e0e0e0;
-  }
+    .leaflet-popup-content {
+      font-family: 'Sarabun', sans-serif;
+      font-size: 12px;
+    }
+    .leaflet-routing-container {
+      background-color: #f9f9f9;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      font-family: 'Sarabun', sans-serif;
+      font-size: 12px;
+      padding: 10px;
+      width: 270px;
+      border: 1px solid #e0e0e0;
+    }
+    .leaflet-routing-container h2 {
+      font-size: 12px;
+      color: #0047ab;
+      font-weight: bold;
+    }
+    .leaflet-routing-container-hide {
+      width: 32px;
+      height: 32px;
+    }
+    .leaflet-routing-collapse-btn {
+      background-image: url('img/routing.png') !important;
+      background-size: cover;
+      background-repeat: no-repeat;
+      background-position: center center;
+      width: 32px;
+      height: 32px;
+      border: none;
+      border-radius: 6px;
+    }
 
-  /* หัวข้อเส้นทาง */
-  .leaflet-routing-container h2 {
-    font-size: 12px;
-    color: #0047ab;
-    font-weight: bold;
-  }
-
-  /* ปุ่มย่อ/ขยาย */
-.leaflet-routing-container-hide {
-    width: 32px;
-    height: 32px;
-}
-  .leaflet-routing-collapse-btn {
-    background-color: #fff;
-    color: #fff;
-    padding: 0px 0px;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-    margin-top: 0px;
-    top: 0px !important;
-    left: 0px !important;
-    right: 3px !important;
-    background-image: url('img/routing.png') !important;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center center;
-    width: 32px;
-    height: 32px;
-  }
-  
-  .leaflet-routing-collapse-btn:hover {
-    background-color: #fff;
-  }
-
-  
-/*------------------------------------------------*/
-
-    /* กล่องรับค่าพิกัด */
     .floating-panel {
       position: absolute;
       top: 18px;
@@ -111,32 +82,28 @@
     }
   </style>
 
-<!-- ตั้งค่าสีเส้นทาง js/config.js -->
-<script>
-  const cRoute1 ="#0000ff";//ทางหลัก
-  const cRoute2 ="red";    //สำรอง1
-  const cRoute3 ="#f39c12";//สำรอง2
-  const routeColors = [cRoute1, cRoute2, cRoute3];
-  // ✅ สไตล์เส้นหลัก
-  const mainRouteStyles = [
-    { color: 'white', weight: 8, opacity: 0.8 },
-    { color: cRoute1, weight: 3, opacity: 0.8 }
-  ];
+  <script>
+    const cRoute1 = "#0000ff";
+    const cRoute2 = "red";
+    const cRoute3 = "#f39c12";
+    const routeColors = [cRoute1, cRoute2, cRoute3];
 
-  // ✅ สไตล์เส้นสำรอง
-  const altRouteStyles = [
-    [
-      { color: 'white', weight: 6, opacity: 0.8 },
-      { color: cRoute2, weight: 3, opacity: 0.8 }
-    ],
-    [
-      { color: 'white', weight: 6, opacity: 0.8 },
-      { color: cRoute3, weight: 3, opacity: 0.8 }
-    ]
+    const mainRouteStyles = [
+      { color: 'white', weight: 8, opacity: 0.8 },
+      { color: cRoute1, weight: 3, opacity: 0.8 }
     ];
-</script>
 
-  
+    const altRouteStyles = [
+      [
+        { color: 'white', weight: 6, opacity: 0.8 },
+        { color: cRoute2, weight: 3, opacity: 0.8 }
+      ],
+      [
+        { color: 'white', weight: 6, opacity: 0.8 },
+        { color: cRoute3, weight: 3, opacity: 0.8 }
+      ]
+    ];
+  </script>
 </head>
 <body>
   <div id="map"></div>
@@ -146,9 +113,9 @@
     <div id="showInstruction" class="instruction"></div>
   </div>
 
-  <!-- <script src="js/config.js"></script> -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
+
   <script>
     const map = L.map("map").setView([16.439810, 102.829446], 10);
     L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
@@ -163,7 +130,7 @@
     const routeBtn = document.getElementById("routeBtn");
     const coordInputs = document.getElementById("coord-inputs");
     const showInstruction = document.getElementById("showInstruction");
-    
+
     routeBtn.addEventListener("click", () => {
       if (mode === "idle") {
         mode = "selecting";
@@ -184,7 +151,6 @@
 
     map.on("click", (e) => {
       if (mode !== "selecting") return;
-      if (waypoints.length >= 3) return;
 
       const marker = L.marker(e.latlng, { draggable: true }).addTo(map);
       markers.push(marker);
@@ -212,6 +178,7 @@
             : i === waypoints.length - 1
             ? "จุดหมาย :"
             : "ทางผ่าน :";
+
         row.innerHTML = `
           <label>${label}</label>
           <input type="text" value="${pt.lat.toFixed(6)}, ${pt.lng.toFixed(6)}" data-idx="${i}">
@@ -249,57 +216,48 @@
       if (waypoints.length < 2) return;
       if (routeControl) map.removeControl(routeControl);
 
-      // Reorder: Start, Via (optional), End
-      const ordered = [waypoints[0]];
-      if (waypoints.length === 3) ordered.push(waypoints[2]);
-      ordered.push(waypoints[1]);
-
       routeControl = L.Routing.control({
-  waypoints: ordered,
-  routeWhileDragging: true,
-  show: false,
-  collapsible: true,
-  router: L.Routing.osrmv1({
-    serviceUrl: "https://router.project-osrm.org/route/v1",
-  }),
-  createMarker: () => null,
-  showAlternatives: true,
-  lineOptions: {
-    styles: mainRouteStyles    
-  },
-  altLineOptions: [
-    { styles: altRouteStyles[0] },
-    { styles: altRouteStyles[1] }
-  ]
-})
+        waypoints: waypoints,
+        routeWhileDragging: true,
+        show: false,
+        collapsible: true,
+        router: L.Routing.osrmv1({
+          serviceUrl: "https://router.project-osrm.org/route/v1",
+        }),
+        createMarker: () => null,
+        showAlternatives: true,
+        lineOptions: {
+          styles: mainRouteStyles
+        },
+        altLineOptions: [
+          { styles: altRouteStyles[0] },
+          { styles: altRouteStyles[1] }
+        ]
+      })
+      .on("routesfound", function (e) {
+        const popupGroup = L.layerGroup().addTo(map);
+        showInstruction.innerHTML = "";
+        e.routes.forEach((route, idx) => {
+          const summary = route.summary;
+          const distance = (summary.totalDistance / 1000).toFixed(2);
+          const timeMin = Math.round(summary.totalTime / 60);
+          const hrs = Math.floor(timeMin / 60);
+          const mins = timeMin % 60;
+          const timeStr = hrs ? `${hrs} ชม. ${mins} นาที` : `${mins} นาที`;
+          const label = idx === 0 ? "เส้นทางหลัก" : `เส้นทางสำรอง ${idx}`;
+          const midLatLng = route.coordinates[Math.floor(route.coordinates.length / 2)];
+          const popup = L.popup()
+            .setLatLng(midLatLng)
+            .setContent(`<strong>${label}</strong><br>ระยะทาง: ${distance} กม.<br>เวลา: ${timeStr}`)
+            .openOn(map);
+          popupGroup.addLayer(popup);
 
-        .on("routesfound", function (e) {
-          const popupGroup = L.layerGroup().addTo(map);
-          showInstruction.innerHTML = "";
-          e.routes.forEach((route, idx) => {
-            const summary = route.summary;
-            const distance = (summary.totalDistance / 1000).toFixed(2);
-            const timeMin = Math.round(summary.totalTime / 60);
-            const hrs = Math.floor(timeMin / 60);
-            const mins = timeMin % 60;
-            const timeStr = hrs ? `${hrs} ชม. ${mins} นาที` : `${mins} นาที`;
-            const label = idx === 0 ? "เส้นทางหลัก" : `เส้นทางสำรอง ${idx}`;
-            const midLatLng = route.coordinates[Math.floor(route.coordinates.length / 2)];
-            const popup = L.popup()
-              .setLatLng(midLatLng)
-              .setContent(`<strong>${label}</strong><br>ระยะทาง: ${distance} กม.<br>เวลา: ${timeStr}`)
-              .openOn(map);
-            popupGroup.addLayer(popup);
+          showInstruction.innerHTML += `<div style="color: ${routeColors[idx]}"><strong>${label}</strong><br>ระยะทาง: ${distance} กม.<br>เวลา: ${timeStr}</div><br>`;
+        });
 
-            // Show summary below input
-//          showInstruction.innerHTML += `<div><strong>${label}</strong><br>ระยะทาง: ${distance} กม.<br>เวลา: ${timeStr}</div><br>`;
-            showInstruction.innerHTML += `<div style="color: ${routeColors[idx]}"><strong>${label}</strong><br>ระยะทาง: ${distance} กม.<br>เวลา: ${timeStr}</div><br>`;
-
-          });
-
-          routeControl._popupGroup = popupGroup;
-        })
-        .addTo(map);
+        routeControl._popupGroup = popupGroup;
+      })
+      .addTo(map);
     }
 
     function resetAll() {
