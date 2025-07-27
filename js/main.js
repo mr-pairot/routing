@@ -42,11 +42,11 @@ document.addEventListener("DOMContentLoaded", function () {
 
   toggleBtn.addEventListener('click', () => {
       controlPanel.classList.add('show');
-      resetAll();
     });
 
   exitBtn.addEventListener('click', () => {
       controlPanel.classList.remove('show');
+      resetAll();
     });
   
   routeBtn.addEventListener("click", () => {
