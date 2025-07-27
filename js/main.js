@@ -15,9 +15,9 @@ const altRouteStyles = [
 
 // ========== 3.2 รูปแบบหมุด ==========
 const markerIcons = {
-  start: L.icon({ iconUrl: 'img/start.png', iconSize: [40, 40], iconAnchor: [20, 40] }),
-  via:   L.icon({ iconUrl: 'img/via.png', iconSize: [25, 41], iconAnchor: [12, 41] }),
-  end:   L.icon({ iconUrl: 'img/end.png', iconSize: [25, 41], iconAnchor: [12, 41] })
+  start: L.icon({ iconUrl: 'img/start.png', iconSize: [26, 26], iconAnchor: [13, 26] }),
+  via:   L.icon({ iconUrl: 'img/via.png', iconSize: [26, 26], iconAnchor: [13, 26] }),
+  end:   L.icon({ iconUrl: 'img/end.png', iconSize: [26, 26], iconAnchor: [13, 26] })
 };
 
 document.addEventListener("DOMContentLoaded", function () {
