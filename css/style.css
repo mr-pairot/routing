@@ -133,7 +133,7 @@ Map Display
 }
 
 #exitBtn {
-  margin-left: auto;
+  float: right;
   font-family: 'Sarabun', sans-serif;
   font-size: 14px;
   margin-right: 5px;
