@@ -32,10 +32,17 @@ document.addEventListener("DOMContentLoaded", function () {
   let markers = [];
   let mode = "idle";
 
+  const toggleBtn = document.getElementById('togglePanelBtn');
+  const controlPanel = document.getElementById('control-panel');
+  
   const routeBtn = document.getElementById("routeBtn");
   const exitBtn = document.getElementById('exitBtn');
   const coordInputs = document.getElementById("coord-inputs");
   const showInstruction = document.getElementById("showInstruction");
+
+  toggleBtn.addEventListener('click', () => {
+      controlPanel.classList.add('show');
+    });
 
   exitBtn.addEventListener('click', () => {
       controlPanel.classList.remove('show');
