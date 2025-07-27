@@ -75,9 +75,8 @@
 }
 .route-popup {
   background-color: transparent;
-  border: 1px solid #0047ab;
+  border: none;
   padding: 6px;
-  border-radius: 8px;
 }
 .route-popup strong {
   color: #0047ab;
