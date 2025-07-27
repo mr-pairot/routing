@@ -133,10 +133,11 @@ Map Display
 }
 
 #exitBtn {
-  float: right;
+  position: absolute;     
+  top: 6px;
+  right: 6px;
   font-family: 'Sarabun', sans-serif;
   font-size: 14px;
-  margin-right: 5px;
   padding: 5px 10px;
   cursor: pointer;
   color: red;
