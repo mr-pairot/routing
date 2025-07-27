@@ -30,7 +30,7 @@
 
 .remove-btn {
   float: right;
-  color: red;
+  color: gray;
   cursor: pointer;
 }
 .instruction {
