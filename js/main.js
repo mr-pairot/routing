@@ -33,9 +33,14 @@ document.addEventListener("DOMContentLoaded", function () {
   let mode = "idle";
 
   const routeBtn = document.getElementById("routeBtn");
+  const exitBtn = document.getElementById('exitBtn');
   const coordInputs = document.getElementById("coord-inputs");
   const showInstruction = document.getElementById("showInstruction");
 
+  exitBtn.addEventListener('click', () => {
+      controlPanel.classList.remove('show');
+    });
+  
   routeBtn.addEventListener("click", () => {
     if (mode === "idle") {
       mode = "selecting";
