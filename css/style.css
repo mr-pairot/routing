@@ -82,6 +82,9 @@
 .route-popup strong {
   color: #0047ab;
 }
+.leaflet-container a.leaflet-popup-close-button {
+  right: 4px;
+}
 
 /*=============================
 icon and button
