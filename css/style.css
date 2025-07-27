@@ -137,9 +137,9 @@ Map Display
 #togglePanelBtn {
       position: absolute;
       top: 10px;
-      left: 10px;
+      left: 25px;
       z-index: 1000;
-      background: transparent;
+      background: #fff;
       border: none;
       cursor: pointer;
 }
