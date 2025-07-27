@@ -132,13 +132,6 @@ Map Display
   padding: 5px 10px;
 }
 
-#control-panel {
-  position: relative; /* เพื่อให้ลูกใช้ absolute ได้ */
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-
 #exitBtn {
   margin-left: auto;
   font-family: 'Sarabun', sans-serif;
