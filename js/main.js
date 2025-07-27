@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", function () {
       markers.forEach((m) => map.removeLayer(m));
       markers = [];
       coordInputs.innerHTML = "";
-      showInstruction.innerHTML = "คลิกจุดเริ่มต้น แล้วจุดหมาย และทางผ่าน (สูงสุด 3 จุด)";
+      showInstruction.innerHTML = "คลิกจุดเริ่มต้น จุดหมาย และทางผ่าน(ถ้ามี)";
       if (routeControl) {
         map.removeControl(routeControl);
         routeControl = null;
@@ -84,32 +84,42 @@ document.addEventListener("DOMContentLoaded", function () {
   });
 
   function updateInputs() {
-    coordInputs.innerHTML = "";
-    waypoints.forEach((pt, i) => {
-      let label = i === 0 ? "จุดเริ่ม :" : (i === waypoints.length - 1 ? "จุดหมาย :" : "ทางผ่าน :");
-      const showRemove = waypoints.length === 3 && i === 1;
+  coordInputs.innerHTML = "";
 
-      const row = document.createElement("div");
-      row.innerHTML = `
-        <label>${label}</label>
-        <input type="text" value="${pt.lat.toFixed(6)}, ${pt.lng.toFixed(6)}" data-idx="${i}">
-        ${showRemove ? `<span class="remove-btn" onclick="removeVia(${i})">✖</span>` : ""}
-      `;
-      coordInputs.appendChild(row);
-    });
+  waypoints.forEach((pt, i) => {
+    const role = i === 0 ? "start" : (i === waypoints.length - 1 ? "end" : "via");
+    const labelText = i === 0 ? "จุดเริ่ม :" : (i === waypoints.length - 1 ? "จุดหมาย :" : "ทางผ่าน :");
+    const showRemove = waypoints.length === 3 && i === 1;
 
-    coordInputs.querySelectorAll("input").forEach((input) => {
-      input.addEventListener("change", (e) => {
-        const idx = +e.target.dataset.idx;
-        const [lat, lng] = e.target.value.split(",").map(parseFloat);
-        if (!isNaN(lat) && !isNaN(lng)) {
-          waypoints[idx] = L.latLng(lat, lng);
-          markers[idx].setLatLng(waypoints[idx]);
-          drawRoute();
-        }
-      });
+    // สร้าง <img> แสดงไอคอนหน้าป้ายชื่อ
+    const iconUrl = markerIcons[role].options.iconUrl;
+    const iconHtml = `<img src="${iconUrl}" class="role-icon" alt="${role}">`;
+
+    // สร้าง DOM element แต่ละแถว
+    const row = document.createElement("div");
+    row.classList.add("coord-row");
+    row.innerHTML = `
+      <label>${iconHtml}${labelText}</label>
+      <input type="text" value="${pt.lat.toFixed(6)}, ${pt.lng.toFixed(6)}" data-idx="${i}">
+      ${showRemove ? `<span class="remove-btn" onclick="removeVia(${i})">✖</span>` : ""}
+    `;
+    coordInputs.appendChild(row);
+  });
+
+  // เพิ่ม event เมื่อแก้ไขพิกัดใน input
+  coordInputs.querySelectorAll("input").forEach((input) => {
+    input.addEventListener("change", (e) => {
+      const idx = +e.target.dataset.idx;
+      const [lat, lng] = e.target.value.split(",").map(parseFloat);
+      if (!isNaN(lat) && !isNaN(lng)) {
+        waypoints[idx] = L.latLng(lat, lng);
+        markers[idx].setLatLng(waypoints[idx]);
+        drawRoute();
+      }
     });
-  }
+  });
+}
+
 
   window.removeVia = function (index) {
     map.removeLayer(markers[index]);
