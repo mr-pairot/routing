@@ -128,7 +128,7 @@ Map Display
   font-family: 'Sarabun', sans-serif;
   font-size: 14px;
   width: 120px;
-  height: 35px;
+  height: 30px;
   padding: 5px 10px;
 }
 
@@ -140,7 +140,7 @@ Map Display
   cursor: pointer;
   color: red;
   font-weight: bold;
-  height: 35px;
+  height: 30px;
 }
 
 #togglePanelBtn {
