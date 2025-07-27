@@ -42,6 +42,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
   toggleBtn.addEventListener('click', () => {
       controlPanel.classList.add('show');
+      resetAll();
     });
 
   exitBtn.addEventListener('click', () => {
