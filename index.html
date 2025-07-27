@@ -8,97 +8,17 @@
   <link rel="stylesheet" href="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.css" />
   <link rel="stylesheet" href="css/style.css" />
   <link href="https://fonts.googleapis.com/css2?family=Sarabun:wght@400;700&display=swap" rel="stylesheet">
-
-  <style>
-    body, html {
-      margin: 0;
-      padding: 0;
-      font-family: 'Sarabun', sans-serif;
-      height: 100%;
-    }
-
-    #map {
-      height: 100vh;
-      width: 100%;
-    }
-
-    #togglePanelBtn {
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      z-index: 1000;
-      background: transparent;
-      border: none;
-      cursor: pointer;
-    }
-
-    #togglePanelBtn img {
-      width: 40px;
-      height: 40px;
-    }
-
-    .floating-panel {
-      position: absolute;
-      top: 60px;
-      left: -320px; /* ซ่อนไว้นอกจอด้านซ้าย */
-      width: 300px;
-      padding: 10px;
-      background: white;
-      box-shadow: 2px 2px 10px rgba(0,0,0,0.3);
-      transition: left 0.3s ease;
-      z-index: 999;
-    }
-
-    .floating-panel.show {
-      left: 10px; /* เมื่อแสดง เลื่อนเข้าจอ */
-    }
-
-    #routeBtn, #exitBtn {
-      font-family: 'Sarabun', sans-serif;
-      font-size: 14px;
-      margin-right: 5px;
-      padding: 5px 10px;
-      cursor: pointer;
-    }
-
-    #coord-inputs {
-      margin-top: 10px;
-    }
-  </style>
 </head>
 <body>
-
-  <!-- ปุ่ม Toggle เปิด Panel -->
-  <button id="togglePanelBtn" title="ค้นหาเส้นทาง">
-    <img src="img/location.png" alt="ค้นหาเส้นทาง">
-  </button>
-
-  <!-- Floating Panel -->
+  <div id="map"></div>
   <div class="floating-panel" id="control-panel">
     <button id="routeBtn">ค้นหาเส้นทาง</button>
-    <button id="exitBtn">✕</button>
     <div id="coord-inputs"></div>
     <div id="showInstruction" class="instruction"></div>
   </div>
 
-  <!-- Leaflet Scripts -->
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
   <script src="js/main.js"></script>
-
-  <!-- Script สำหรับ Panel -->
-  <script>
-    const toggleBtn = document.getElementById('togglePanelBtn');
-    const controlPanel = document.getElementById('control-panel');
-    const exitBtn = document.getElementById('exitBtn');
-
-    toggleBtn.addEventListener('click', () => {
-      controlPanel.classList.add('show');
-    });
-
-    exitBtn.addEventListener('click', () => {
-      controlPanel.classList.remove('show');
-    });
-  </script>
 </body>
 </html>
