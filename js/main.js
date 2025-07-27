@@ -43,7 +43,7 @@ document.addEventListener("DOMContentLoaded", function () {
       markers.forEach((m) => map.removeLayer(m));
       markers = [];
       coordInputs.innerHTML = "";
-      showInstruction.innerHTML = "คลิกจุดเริ่มต้น จุดหมาย และทางผ่าน(ถ้ามี)";
+      showInstruction.innerHTML = "คลิกจุดเริ่มต้น จุดหมาย <br>และทางผ่าน(ถ้ามี)";
       if (routeControl) {
         map.removeControl(routeControl);
         routeControl = null;
