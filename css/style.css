@@ -137,10 +137,11 @@ Map Display
 #togglePanelBtn {
       position: absolute;
       top: 10px;
-      left: 25px;
+      left: 75px;
       z-index: 1000;
       background: #fff;
       border: none;
+      border-radius: 6px;
       cursor: pointer;
 }
 
