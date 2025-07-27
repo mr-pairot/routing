@@ -3,8 +3,8 @@
 ========================== */
 .floating-panel {
   position: absolute;
-  top: 18px;
-  left: 10px;
+  top: 60px;
+  left: -200px;
   background: white;
   padding: 15px;
   border-radius: 12px;
@@ -13,6 +13,7 @@
   width: 170px;
   font-family: 'Sarabun', sans-serif;
   font-size: 12px;
+  transition: left 0.3s ease;
 }
 .floating-panel button {
   font-family: 'Sarabun', sans-serif !important;
@@ -23,6 +24,10 @@
   padding: 5px;
   border: 1px solid #ccc;
 }
+.floating-panel.show {
+      left: 10px; /* เมื่อแสดง เลื่อนเข้าจอ */
+}
+
 .remove-btn {
   float: right;
   color: red;
