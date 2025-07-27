@@ -146,6 +146,7 @@ Map Display
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
       width: 42px;
       height: 42px;
+      background-position: center center;
 }
 
 #togglePanelBtn img {
