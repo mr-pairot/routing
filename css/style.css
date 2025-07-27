@@ -83,7 +83,13 @@
   color: #0047ab;
 }
 .leaflet-container a.leaflet-popup-close-button {
+  position: absolute;     
+  top: 0px;
   right: 4px;
+  text-decoration: none;
+  background: transparent;
+  border: none;
+  opacity: 0.6;
 }
 
 /*=============================
