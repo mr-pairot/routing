@@ -22,10 +22,11 @@ const markerIcons = {
 
 document.addEventListener("DOMContentLoaded", function () {
   const map = L.map("map").setView([16.439810, 102.829446], 10);
-  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
-    attribution: "&copy; OpenStreetMap contributors",
-  }).addTo(map);
-
+  L.tileLayer("https://mt1.google.com/vt/lyrs=m&x={x}&y={y}&z={z}",
+        {
+          attribution: "&copy; Google",
+        }).addTo(map);
+  
   let routeControl = null;
   let waypoints = [];
   let markers = [];
