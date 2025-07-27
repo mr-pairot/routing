@@ -118,3 +118,13 @@ Map Display
   height: 100vh;
   cursor: default;
 }
+
+#exitBtn {
+  font-family: 'Sarabun', sans-serif;
+  font-size: 14px;
+  margin-right: 5px;
+  padding: 5px 10px;
+  cursor: pointer;
+  color: red;
+  font-weight: bold;
+}
