@@ -3,7 +3,7 @@
 ========================== */
 .floating-panel {
   position: absolute;
-  top: 60px;
+  top: 20px;
   left: -200px;
   background: white;
   padding: 15px;
@@ -149,6 +149,6 @@ Map Display
 }
 
 #togglePanelBtn img {
-      width: 40px;
-      height: 40px;
+      width: 36px;
+      height: 36px;
 }
