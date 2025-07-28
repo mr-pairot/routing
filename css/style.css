@@ -28,15 +28,17 @@
       left: 10px; /* เมื่อแสดง เลื่อนเข้าจอ */
 }
 
-.remove-btn {
-  float: right;
-  color: gray;
-  cursor: pointer;
-}
 .instruction {
   margin-top: 10px;
   color: #0000ff;
   font-weight: normal;
+}
+.remove-btn {
+  float: right;
+  margin-left: 8px;
+  cursor: pointer;
+  color: gray;
+  font-weight: bold;
 }
 
 /* ============================
@@ -106,15 +108,6 @@ icon and button
 .coord-row {
   margin-bottom: 6px;
 }
-
-.remove-btn {
-  margin-left: 8px;
-  cursor: pointer;
-  color: red;
-  font-weight: bold;
-}
-
-
 
 /* ============================
 Map Display
