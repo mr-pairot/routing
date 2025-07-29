@@ -183,7 +183,7 @@ document.addEventListener("DOMContentLoaded", function () {
           .setContent(`<strong>${label}</strong><br>ระยะทาง: ${distance} กม.<br>เวลาประมาณ: ${timeStr}`)
           //.openOn(map);
           .addTo(popupGroup);
-        popupGroup.addLayer(popup);
+          //popupGroup.addLayer(popup);
 
         showInstruction.innerHTML += `<div style="color: ${routeColors[idx]}"><strong>${label}</strong><br>ระยะทาง: ${distance} กม.<br>เวลาประมาณ: ${timeStr}</div><br>`;
       });
