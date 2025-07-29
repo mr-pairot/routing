@@ -90,6 +90,14 @@ document.addEventListener("DOMContentLoaded", function () {
       m.off("dragend").on("dragend", () => {
         waypoints[i] = m.getLatLng();
         updateInputs();
+
+    // 🔴 ลบ popup ทิ้งก่อนคำนวณใหม่
+    if (routeControl && routeControl._popupGroup) {
+      map.removeLayer(routeControl._popupGroup);
+      delete routeControl._popupGroup;
+    }
+
+        
         drawRoute();
       });
     });
