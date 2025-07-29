@@ -160,7 +160,7 @@ Map Display
       z-index: 1000;
       background: #fff;
       border: none;
-      border-radius: 6px;
+      border-radius: 26px;
       cursor: pointer;
       box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
       width: 42px;
@@ -169,8 +169,8 @@ Map Display
 }
 
 #togglePanelBtn img {
-      width: 36px;
-      height: 36px;
+      width: 32px;
+      height: 32px;
 }
 
 
