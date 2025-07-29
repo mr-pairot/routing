@@ -33,6 +33,10 @@
   font-size: 12px;
 }
 
+.coord-row {
+  margin-bottom: 6px;
+}
+
 .instruction {
   margin-top: 10px;
   color: #0000ff;
@@ -44,6 +48,9 @@
   cursor: pointer;
   color: gray;
   font-weight: bold;
+}
+.remove-btn:hover {
+  color: darkred;
 }
 
 /* ============================
@@ -110,9 +117,6 @@ icon and button
   margin-right: 6px;
 }
 
-.coord-row {
-  margin-bottom: 6px;
-}
 
 /* ============================
 Map Display
@@ -128,6 +132,10 @@ Map Display
   width: 120px;
   height: 34px;
   padding: 5px 10px;
+}
+
+#routeBtn:hover {
+  background-color: #f0f0f0;
 }
 
 #exitBtn {
@@ -164,4 +172,5 @@ Map Display
       width: 36px;
       height: 36px;
 }
+
 
