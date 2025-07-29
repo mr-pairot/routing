@@ -90,13 +90,14 @@
 ============================= */
 .leaflet-popup-content {
   font-family: 'Sarabun', sans-serif;
-  font-size: 12px;
+  font-size: 10px;
   margin: 5px 12px 5px 8px;
 }
 .route-popup {
   background-color: transparent;
   border: none;
   padding: 6px;
+  maxWidth: 125px;
 }
 .route-popup strong {
   color: #0047ab;
