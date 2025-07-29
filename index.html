@@ -12,20 +12,21 @@
 <body>
   <div id="map"></div>
   
-  <!-- ปุ่ม Toggle เปิด Panel -->
-  <button id="togglePanelBtn" title="ค้นหาเส้นทาง">
-    <img src="img/location.png" alt="ค้นหาเส้นทาง">
-  </button>
-  
-  <div class="floating-panel" id="control-panel">
-    <button id="routeBtn">ค้นหาเส้นทาง</button>
-    <button id="exitBtn">✖</button>
-    <div id="coord-inputs"></div>
-    <div id="showInstruction" class="instruction"></div>
-  </div>
-
   <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
   <script src="https://unpkg.com/leaflet-routing-machine@latest/dist/leaflet-routing-machine.js"></script>
+
+  <!-- ปุ่ม Toggle เปิด Panel Routing-->
+  <button id="togglePanelBtn" title="ค้นหาเส้นทาง">
+  <img src="img/location.png" alt="ค้นหาเส้นทาง">
+  </button>
+  <div class="floating-panel" id="control-panel">
+      <button id="routeBtn">ค้นหาเส้นทาง</button>
+      <button id="exitBtn">✖</button>
+      <div id="coord-inputs"></div>
+      <div id="showInstruction" class="instruction"></div>
+  </div>
   <script src="js/routing_main.js"></script>
+
+  
 </body>
 </html>
