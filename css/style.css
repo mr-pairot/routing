@@ -28,6 +28,11 @@
       left: 10px; /* เมื่อแสดง เลื่อนเข้าจอ */
 }
 
+.coord-row input {
+  font-family: 'Sarabun', sans-serif;
+  font-size: 12px;
+}
+
 .instruction {
   margin-top: 10px;
   color: #0000ff;
