@@ -1,4 +1,9 @@
-// ========== 3.1 เส้นทาง ==========
+// -- routing_main.js -- //
+// -- Update 2025-07 by Mr.pairot@gmail.com 
+// -- Credit https://www.liedman.net/leaflet-routing-machine/
+// ----------------------------------------------------------------
+
+// ========== 1 Set Route Color ==========
 const cRoute1 = "#0000ff";
 const cRoute2 = "red";
 const cRoute3 = "#f39c12";
@@ -13,20 +18,13 @@ const altRouteStyles = [
   [{ color: 'white', weight: 6, opacity: 0.8 }, { color: cRoute3, weight: 3, opacity: 0.8 }]
 ];
 
-// ========== 3.2 รูปแบบหมุด ==========
+// ========== 2 Popup Marker ==========
 const markerIcons = {
   start: L.icon({ iconUrl: 'img/start.png', iconSize: [26, 26], iconAnchor: [13, 26] }),
   via:   L.icon({ iconUrl: 'img/via.png', iconSize: [26, 26], iconAnchor: [13, 26] }),
   end:   L.icon({ iconUrl: 'img/end.png', iconSize: [26, 26], iconAnchor: [13, 26] })
 };
 
-document.addEventListener("DOMContentLoaded", function () {
-  const map = L.map("map").setView([16.439810, 102.829446], 10);
-  L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
-        {
-          attribution: "&copy; OpenStreetMap contributors",
-        }).addTo(map);
-  
   let routeControl = null;
   let waypoints = [];
   let markers = [];
@@ -211,4 +209,3 @@ document.addEventListener("DOMContentLoaded", function () {
       routeControl = null;
     }
   }
-});
